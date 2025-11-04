@@ -26,6 +26,9 @@ data <- read.csv("merged_data_2022_four_variables.csv")
 median_health_exp <- median(data$Health_Expenditure_2022)
 data$Health_Exp_Group <- ifelse(data$Health_Expenditure_2022 > median_health_exp, 
           "Above Median", "Below Median")
+median_gdp_per_capita <- median(data$GDP_per_Capita_2022)
+data$GDP_Group <- ifelse(data$GDP_per_Capita_2022 > median_gdp_per_capita, 
+          "Above Median", "Below Median")
 
 ## Use this chunk for reading in the data, combining the data, and any other major data cleaning that is not relevant to show.
 ## Remove the ## before all code.
@@ -35,6 +38,8 @@ data$Health_Exp_Group <- ifelse(data$Health_Expenditure_2022 > median_health_exp
 Often times quality of life is measured by Real GDP per Capita, the higher this is for a country, the higher perceived quality of life its citizens have. However, we believe it is important to look at health outcomes, specifically life expectancy and infant mortality, to measure quality of life. We will be looking at the relationship between health expenditure as a % of GDP and infant mortality and life expectancy at birth to see if additional spending is strongly correlated with better health outcomes. \newline
 -We will specifically be researching if countries with health expenditure above the median have lower infant mortality rates than countries that spend below the median. \newline
 -We will also look to see if countries with health expenditure above the median have higher life expectancy than those that spend below the median. 
+\newline
+- Lastly, we will observe countries that have a below median GDP per capita and determine whether from that set of countries, if countries that spend more than 5% on health expenditure have a greater life expectancy than countries that spend less than 5% on health expenditure.
 
 ## Data Summary
 The data used in our project represents a population. The data was collected from the World Bank Open Data Portal and contained data on territories, countries, and regional groupings across the world. We filtered the data to remove any data that did not represent an individual country, and collected data from 2022 only. Further, when merging the datasets for Health Expenditure, Infant mortality Rate, GDP per Capita, and Life Expectancy, some countries were missing data so we excluded them from the dataset entirely. These countries were Cuba, Eritrea, North Korea, Kosovo, South Sudan, Ukraine, Venezuela, and Yemen. After we completed the data cleaning process, we had a total of 188 countries.
@@ -155,6 +160,18 @@ rownames(correlation_matrix) <- c("Health Exp.", "Infant Mort.",
 kable(round(correlation_matrix, 3),
       caption = "Correlation Matrix of Health and Economic Indicators (2022)",
       align = 'c')
+
+q3data <- data %>%
+  filter(GDP_Group=="Below Median")
+sp3 <- ggplot(q3data, aes(x=Health_Expenditure_2022, y=Life_Expectancy_2022)) +
+  geom_point(color = "steelblue", size = 3, alpha = 0.6) +
+  labs(title = "Life Expectancy vs Health Expenditure (2022) for Countries with Below Median GDP per Capita",
+       x = "Health Expenditure (% of GDP)",
+       y = "Life Expectancy (years)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 8))
+sp3
+
 ```
 \newpage
 ## References
