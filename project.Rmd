@@ -1,5 +1,9 @@
 ---
-title: "Project Part X" 
+title: "Project Part 1"
+author:
+  - name: "Risshi Naaavaal"
+  - name: "Caleb Adhikari"
+  - name: "Jonas Lee"
 fontsize: 12pt
 geometry: margin=1in
 urlcolor: black
@@ -28,7 +32,6 @@ data$Health_Exp_Group <- ifelse(data$Health_Expenditure_2022 > median_health_exp
 ```
 
 ## Introduction 
-### Subsection headers, if using
 Often times quality of life is measured by Real GDP per Capita, the higher this is for a country, the higher perceived quality of life its citizens have. However, we believe it is important to look at health outcomes, specifically life expectancy and infant mortality, to measure quality of life. We will be looking at the relationship between health expenditure as a % of GDP and infant mortality and life expectancy at birth to see if additional spending is strongly correlated with better health outcomes. \newline
 -We will specifically be researching if countries with health expenditure above the median have lower infant mortality rates than countries that spend below the median. \newline
 -We will also look to see if countries with health expenditure above the median have higher life expectancy than those that spend below the median. 
