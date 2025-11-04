@@ -1,0 +1,98 @@
+---
+title: "Project Data Clean"
+output: html_document
+---
+
+``` {r}
+library(readr)
+library(dplyr)
+library(tidyr)
+
+library(dplyr)
+
+# Read all four datasets
+health_data <- read.csv("health_expenditure_of_gdp.csv", 
+                        skip = 4,
+                        stringsAsFactors = FALSE)
+
+mortality_data <- read.csv("Infant_Mortality_Rate.csv", 
+                          skip = 4,
+                          stringsAsFactors = FALSE)
+
+gdp_data <- read.csv("GDP_per_Capita.csv", 
+                     skip = 4,
+                     stringsAsFactors = FALSE)
+
+life_exp_data <- read.csv("Life_Expectancy.csv", 
+                         skip = 4,
+                         stringsAsFactors = FALSE)
+
+# Select 2022 data from each dataset
+health_2022 <- health_data[, c("Country.Name", "Country.Code", "X2022")]
+names(health_2022)[3] <- "Health_Expenditure_2022"
+
+mortality_2022 <- mortality_data[, c("Country.Name", "Country.Code", "X2022")]
+names(mortality_2022)[3] <- "Infant_Mortality_2022"
+
+gdp_2022 <- gdp_data[, c("Country.Name", "Country.Code", "X2022")]
+names(gdp_2022)[3] <- "GDP_per_Capita_2022"
+
+life_exp_2022 <- life_exp_data[, c("Country.Name", "Country.Code", "X2022")]
+names(life_exp_2022)[3] <- "Life_Expectancy_2022"
+
+# Merge all datasets together by Country Name and Country Code
+merged_data <- merge(health_2022, mortality_2022, 
+                     by = c("Country.Name", "Country.Code"))
+merged_data <- merge(merged_data, gdp_2022, 
+                     by = c("Country.Name", "Country.Code"))
+merged_data <- merge(merged_data, life_exp_2022, 
+                     by = c("Country.Name", "Country.Code"))
+
+# Clean the data - convert empty strings to NA
+merged_data$Health_Expenditure_2022[merged_data$Health_Expenditure_2022 == ""] <- NA
+merged_data$Infant_Mortality_2022[merged_data$Infant_Mortality_2022 == ""] <- NA
+merged_data$GDP_per_Capita_2022[merged_data$GDP_per_Capita_2022 == ""] <- NA
+merged_data$Life_Expectancy_2022[merged_data$Life_Expectancy_2022 == ""] <- NA
+
+# Convert to numeric
+merged_data$Health_Expenditure_2022 <- as.numeric(merged_data$Health_Expenditure_2022)
+merged_data$Infant_Mortality_2022 <- as.numeric(merged_data$Infant_Mortality_2022)
+merged_data$GDP_per_Capita_2022 <- as.numeric(merged_data$GDP_per_Capita_2022)
+merged_data$Life_Expectancy_2022 <- as.numeric(merged_data$Life_Expectancy_2022)
+
+# Remove rows with any NA values
+merged_data <- merged_data[complete.cases(merged_data), ]
+
+# Regional aggregates to exclude
+regional_aggregates <- c(
+  "Africa Eastern and Southern", "Africa Western and Central", "Arab World",
+  "Caribbean small states", "Central Europe and the Baltics", "Early-demographic dividend",
+  "East Asia & Pacific", "East Asia & Pacific (excluding high income)",
+  "East Asia & Pacific (IDA & IBRD countries)", "Euro area", "Europe & Central Asia",
+  "Europe & Central Asia (excluding high income)", "Europe & Central Asia (IDA & IBRD countries)",
+  "European Union", "Fragile and conflict affected situations", "Heavily indebted poor countries (HIPC)",
+  "High income", "IBRD only", "IDA & IBRD total", "IDA blend", "IDA only", "IDA total",
+  "Late-demographic dividend", "Latin America & Caribbean", "Latin America & Caribbean (excluding high income)",
+  "Latin America & the Caribbean (IDA & IBRD countries)", "Least developed countries: UN classification",
+  "Low & middle income", "Low income", "Lower middle income", "Middle East & North Africa",
+  "Middle East & North Africa (excluding high income)", "Middle East & North Africa (IDA & IBRD countries)",
+  "Middle income", "North America", "Not classified", "OECD members", "Other small states",
+  "Pacific island small states", "Post-demographic dividend", "Pre-demographic dividend",
+  "Small states", "South Asia", "South Asia (IDA & IBRD)", "Sub-Saharan Africa",
+  "Sub-Saharan Africa (excluding high income)", "Sub-Saharan Africa (IDA & IBRD countries)",
+  "Upper middle income", "World"
+)
+
+# Keep only individual countries (remove regional aggregates & West Bank & Gaza territory)
+countries_only <- merged_data[!merged_data$Country.Name %in% regional_aggregates, ]
+countries_only <- countries_only[countries_only$Country.Name != "West Bank and Gaza", ]
+
+# View the results
+head(countries_only)
+cat("\nTotal countries with complete data for all 4 variables:", nrow(countries_only), "\n")
+
+# Save the final dataset
+write.csv(countries_only, "merged_data_2022_four_variables2.csv", row.names = FALSE)
+
+cat("Data saved to 'merged_data_2022_four_variables.csv'\n")
+```

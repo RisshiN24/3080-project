@@ -1,0 +1,173 @@
+---
+title: "Project Part X" 
+fontsize: 12pt
+geometry: margin=1in
+urlcolor: black
+output: pdf_document
+header-includes:
+- \usepackage{setspace}
+- \onehalfspacing
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, highlight=FALSE)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(patchwork)
+library(knitr)
+
+data <- read.csv("merged_data_2022_four_variables2.csv")
+median_health_exp <- median(data$Health_Expenditure_2022)
+data$Health_Exp_Group <- ifelse(data$Health_Expenditure_2022 > median_health_exp, 
+          "Above Median", "Below Median")
+
+## Use this chunk for reading in the data, combining the data, and any other major data cleaning that is not relevant to show.
+## Remove the ## before all code.
+```
+
+## Introduction 
+### Subsection headers, if using
+Often times quality of life is measured by Real GDP per Capita, the higher this is for a country, the higher perceived quality of life its citizens have. However, we believe it is important to look at health outcomes, specifically life expectancy and infant mortality, to measure quality of life. We will be looking at the relationship between health expenditure as a % of GDP and infant mortality and life expectancy at birth to see if additional spending is strongly correlated with better health outcomes. \newline
+-We will specifically be researching if countries with health expenditure above the median have lower infant mortality rates than countries that spend below the median. \newline
+-We will also look to see if countries with health expenditure above the median have higher life expectancy than those that spend below the median. 
+
+## Data Summary
+The data used in our project represents a population. The data was collected from the World Bank Open Data Portal and contained data on territories, countries, and regional groupings across the world. We filtered the data to remove any data that did not represent an individual country, and collected data from 2022 only. Further, when merging the datasets for Health Expenditure, Infant mortality Rate, GDP per Capita, and Life Expectancy, some countries were missing data so we excluded them from the dataset entirely. These countries were Cuba, Eritrea, North Korea, Kosovo, South Sudan, Ukraine, Venezuela, and Yemen. After we completed the data cleaning process, we had a total of 188 countries.
+
+We removed regional groupings to ensure there was no double counting of data, and narrowed our research to countries because territories tend to be missing data.
+
+The data comes from a population, but because we were missing some data for 8 countries, it is not a full population. There could be some missing data bias as the countries that are missing data are similar in that they have political instability(ie. Ukraine and North Korea). This means our data does not fully represent unstable countries. We chose the year 2022, and the data may refelct changes due to the Covid-19 Pandemic, so some of the data like health expenditure as a % of GDP may be inflated.
+
+The data is perfect for our research purposes as we have standard units to measure across all coutnries, and official published data is available. We have a very large dataset with 188 observations to reduce variability.
+
+Linebreaks are created using two spaces at the end of the previous line of text, or using the command \newline.  
+Pagebreaks are created using the command \newpage.  
+Note: These commands execute when knitting, moving the end-of-sentence period in the resulting PDF.
+
+```{r, echo=FALSE}
+summary_data <- data %>%
+  group_by(Health_Exp_Group) %>%
+  summarise(
+    Mean_Infant_Mortality = mean(Infant_Mortality_2022),
+    Mean_Life_Expectancy = mean(Life_Expectancy_2022)
+  )
+
+# Scatter Plot 1: Health Expenditure vs Life Expectancy
+sp1 <- ggplot(data, aes(x = Life_Expectancy_2022, y = Health_Expenditure_2022)) +
+  geom_point(color = "steelblue", size = 3, alpha = 0.6) +
+  labs(title = "Health Expenditure vs Life Expectancy (2022)",
+       x = "Life Expectancy (years)",
+       y = "Health Expenditure (% of GDP)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 10))
+
+# Scatter Plot 2: Health Expenditure vs Infant Mortality
+sp2 <- ggplot(data, aes(x = Infant_Mortality_2022, y = Health_Expenditure_2022)) +
+  geom_point(color = "coral", size = 3, alpha = 0.6) +
+  labs(title = "Health Expenditure vs Infant Mortality (2022)",
+       x = "Infant Mortality (per 1,000 live births)",
+       y = "Health Expenditure (% of GDP)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 10))
+
+# Combine side by side
+sp1 + sp2
+
+
+# Calculate summary statistics for all 4 variables
+summary_stats <- data.frame(
+  Variable = c("Health Expenditure (% of GDP)", 
+               "Infant Mortality (per 1,000 births)",
+               "GDP per Capita (US$)",
+               "Life Expectancy (years)"),
+  Mean = c(mean(data$Health_Expenditure_2022),
+           mean(data$Infant_Mortality_2022),
+           mean(data$GDP_per_Capita_2022),
+           mean(data$Life_Expectancy_2022)),
+  Median = c(median(data$Health_Expenditure_2022),
+             median(data$Infant_Mortality_2022),
+             median(data$GDP_per_Capita_2022),
+             median(data$Life_Expectancy_2022)),
+  Min = c(min(data$Health_Expenditure_2022),
+          min(data$Infant_Mortality_2022),
+          min(data$GDP_per_Capita_2022),
+          min(data$Life_Expectancy_2022)),
+  Max = c(max(data$Health_Expenditure_2022),
+          max(data$Infant_Mortality_2022),
+          max(data$GDP_per_Capita_2022),
+          max(data$Life_Expectancy_2022))
+)
+
+# Round the numbers
+summary_stats[, 2:5] <- round(summary_stats[, 2:5], 2)
+
+# Create a nice table
+kable(summary_stats,
+      caption = "Summary Statistics for Health and Economic Indicators (2022)",
+      align = c('l', 'c', 'c', 'c', 'c'),
+      col.names = c("Variable", "Mean", "Median", "Min", "Max"))
+
+# Create compact plots
+p1 <- ggplot(summary_data, aes(x = Health_Exp_Group, y = Mean_Infant_Mortality, fill = Health_Exp_Group)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6) +
+  geom_text(aes(label = round(Mean_Infant_Mortality, 2)), vjust = -0.5, size = 3.5) +
+  labs(title = "Mean Infant Mortality", x = NULL, y = "Infant Mortality (per 1,000)") +
+  scale_fill_manual(values = c("Above Median" = "steelblue", "Below Median" = "coral")) +
+  theme_minimal() +
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10))
+
+p2 <- ggplot(summary_data, aes(x = Health_Exp_Group, y = Mean_Life_Expectancy, fill = Health_Exp_Group)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.6) +
+  geom_text(aes(label = round(Mean_Life_Expectancy, 2)), vjust = -0.5, size = 3.5) +
+  labs(title = "Mean Life Expectancy", x = NULL, y = "Life Expectancy (years)") +
+  scale_fill_manual(values = c("Above Median" = "steelblue", "Below Median" = "coral")) +
+  theme_minimal() +
+  theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10))
+
+# Combine side by side with a title
+combined <- (p1 + p2) + 
+  plot_annotation(
+    title = 'Health Outcomes by Health Expenditure Level (2022)',
+    subtitle = 'Comparing countries above and below median health expenditure (6.41% of GDP)',
+    theme = theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 12))
+  )
+combined
+
+# Create correlation matrix
+cor_data <- data %>%
+  select(Health_Expenditure_2022, Infant_Mortality_2022, 
+         GDP_per_Capita_2022, Life_Expectancy_2022)
+
+correlation_matrix <- cor(cor_data)
+
+# Shorten column/row names so they fit better
+colnames(correlation_matrix) <- c("Health Exp.", "Infant Mort.", 
+                                   "GDP per Cap.", "Life Exp.")
+rownames(correlation_matrix) <- c("Health Exp.", "Infant Mort.", 
+                                   "GDP per Cap.", "Life Exp.")
+
+# Simple, clean table that will knit without issues
+kable(round(correlation_matrix, 3),
+      caption = "Correlation Matrix of Health and Economic Indicators (2022)",
+      align = 'c')
+```
+\newpage
+## References
+-Anthropic. (2024). Claude (Version 3.5) [Large language model]. https://www.anthropic.com/claude\newline
+
+-World Bank. (2024). GDP per capita (current US$) [Data set]. World Bank Open Data. https://data.worldbank.org/indicator/NY.GDP.PCAP.CD\newline
+
+-World Bank. (2024). Life expectancy at birth, total (years) [Data set]. World Bank Open Data. https://data.worldbank.org/indicator/SP.DYN.LE00.IN\newline
+
+-World Bank. (2024). Mortality rate, infant (per 1,000 live births) [Data set]. World Bank Open Data. https://data.worldbank.org/indicator/SP.DYN.IMRT.IN\newline
+
+-World Bank. (2024). Current health expenditure (% of GDP) [Data set]. World Bank Open Data. https://data.worldbank.org/indicator/SH.XPD.CHEX.GD.ZS
+
+```{r}
+## R code to conduct the test in part 2.
+## This R code will be printed in the PDF.
+## Remove the ## before all code.
+```
+
