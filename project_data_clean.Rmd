@@ -15,15 +15,15 @@ health_data <- read.csv("health_expenditure_of_gdp.csv",
                         skip = 4,
                         stringsAsFactors = FALSE)
 
-mortality_data <- read.csv("Infant_Mortality_Rate.csv", 
+mortality_data <- read.csv("infant_mortality_rate.csv",
                           skip = 4,
                           stringsAsFactors = FALSE)
 
-gdp_data <- read.csv("GDP_per_Capita.csv", 
+gdp_data <- read.csv("gdp_per_capita.csv",
                      skip = 4,
                      stringsAsFactors = FALSE)
 
-life_exp_data <- read.csv("Life_Expectancy.csv", 
+life_exp_data <- read.csv("life_expectancy.csv",
                          skip = 4,
                          stringsAsFactors = FALSE)
 
