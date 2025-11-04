@@ -18,7 +18,7 @@ library(tidyverse)
 library(patchwork)
 library(knitr)
 
-data <- read.csv("merged_data_2022_four_variables2.csv")
+data <- read.csv("merged_data_2022_four_variables.csv")
 median_health_exp <- median(data$Health_Expenditure_2022)
 data$Health_Exp_Group <- ifelse(data$Health_Expenditure_2022 > median_health_exp, 
           "Above Median", "Below Median")

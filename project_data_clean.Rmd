@@ -92,7 +92,7 @@ head(countries_only)
 cat("\nTotal countries with complete data for all 4 variables:", nrow(countries_only), "\n")
 
 # Save the final dataset
-write.csv(countries_only, "merged_data_2022_four_variables2.csv", row.names = FALSE)
+write.csv(countries_only, "merged_data_2022_four_variables.csv", row.names = FALSE)
 
 cat("Data saved to 'merged_data_2022_four_variables.csv'\n")
 ```
