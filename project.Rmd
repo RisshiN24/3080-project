@@ -29,9 +29,6 @@ data$Health_Exp_Group <- ifelse(data$Health_Expenditure_2022 > median_health_exp
 median_gdp_per_capita <- median(data$GDP_per_Capita_2022)
 data$GDP_Group <- ifelse(data$GDP_per_Capita_2022 > median_gdp_per_capita, 
           "Above Median", "Below Median")
-
-## Use this chunk for reading in the data, combining the data, and any other major data cleaning that is not relevant to show.
-## Remove the ## before all code.
 ```
 
 ## Introduction 
@@ -49,10 +46,6 @@ We removed regional groupings to ensure there was no double counting of data, an
 The data comes from a population, but because we were missing some data for 8 countries, it is not a full population. There could be some missing data bias as the countries that are missing data are similar in that they have political instability(ie. Ukraine and North Korea). This means our data does not fully represent unstable countries. We chose the year 2022, and the data may refelct changes due to the Covid-19 Pandemic, so some of the data like health expenditure as a % of GDP may be inflated.
 
 The data is perfect for our research purposes as we have standard units to measure across all coutnries, and official published data is available. We have a very large dataset with 188 observations to reduce variability.
-
-Linebreaks are created using two spaces at the end of the previous line of text, or using the command \newline.  
-Pagebreaks are created using the command \newpage.  
-Note: These commands execute when knitting, moving the end-of-sentence period in the resulting PDF.
 
 ```{r, echo=FALSE}
 summary_data <- data %>%
@@ -192,10 +185,10 @@ bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expec
     theme_minimal() +
     theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10))
 bp3
-
-
-
 ```
+## Exploratory Data Analysis
+
+## Conclusions
 \newpage
 ## References
 -Anthropic. (2024). Claude (Version 3.5 and Sonnet 4.5) [Large language model]. https://www.anthropic.com/claude\newline
@@ -207,10 +200,4 @@ bp3
 -World Bank. (2024). Mortality rate, infant (per 1,000 live births) [Data set]. World Bank Open Data. https://data.worldbank.org/indicator/SP.DYN.IMRT.IN\newline
 
 -World Bank. (2024). Current health expenditure (% of GDP) [Data set]. World Bank Open Data. https://data.worldbank.org/indicator/SH.XPD.CHEX.GD.ZS
-
-```{r}
-## R code to conduct the test in part 2.
-## This R code will be printed in the PDF.
-## Remove the ## before all code.
-```
 
