@@ -1,9 +1,6 @@
 ---
 title: "Project Part 1"
-author:
-  - name: "Risshi Naaavaal"
-  - name: "Caleb Adhikari"
-  - name: "Jonas Lee"
+author: "Risshi Naaavaal, Caleb Adhikari, and Jonas Lee"
 fontsize: 12pt
 geometry: margin=1in
 urlcolor: black
@@ -14,7 +11,7 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, highlight=FALSE)
+knitr::opts_chunk$set(echo = FALSE, highlight=FALSE)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -47,6 +44,7 @@ The data comes from a population, but because we were missing some data for 8 co
 
 The data is perfect for our research purposes as we have standard units to measure across all coutnries, and official published data is available. We have a large dataset with 188 observations to reduce variability. Below is a data dictionary for clear understanding of the variables and units. 
 
+## Data Dictionary
 ``` {r, echo=FALSE}
 library(knitr)
 
@@ -80,6 +78,8 @@ kable(data_dictionary,
       align = c('l', 'l', 'c'))
 ```
 
+
+## Data Exploration
 ```{r, echo=FALSE}
 summary_data <- data %>%
   group_by(Health_Exp_Group) %>%
@@ -208,7 +208,7 @@ sp3
 
 bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expectancy, fill =
   health_exp_greater_than_5)) +
-    geom_bar(stat = "identity", alpha = 0.8, width = 0.6) +
+    geom_bar(stat = "identity", alpha = 0.8, width = 0.5) +
     geom_text(aes(label = round(Mean_Life_Expectancy, 2)), vjust = -0.5, size = 3.5) +
     labs(title = "Mean Life Expectancy by Health Expenditure Level",
          subtitle = "Countries with Below Median GDP per Capita",
@@ -216,12 +216,29 @@ bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expec
          y = "Life Expectancy (years)") +
     scale_fill_manual(values = c("Above 5%" = "steelblue", "Below 5%" = "coral")) +
     theme_minimal() +
-    theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10))
+    theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10,))
 bp3
 ```
 
 ## Conclusions
+### Research Question \#1: Health Expenditure and Infant Mortality
+Countries that spend more than the median on health (6.43% of GDP) have relatively lower infant mortality rates-15.48 deaths per 1,000 births versus 24.54 for below-median spenders. This 37% difference suggests that higher health spending indeed buys better child survival. However, the correlation is weak at -0.162, and the scatterplot shows a great deal of variation around the trend, including several low-spending countries with good outcomes and some high-spending countries with poor results. This indicates that it is not the level of spending that determines infant mortality but rather how the resources are used.
 
+### Research Question \#2: Health Expenditure and Life Expectancy
+The above-median health spenders have a 3.2-year life expectancy advantage, 74.03 versus 70.79 years. Again, this correlation is weak at 0.153. The scatter plot shows country life expectancies from 50 to 80 years when health spending as a percent of GDP is the same. More interestingly, GDP per capita has a much stronger correlation with life expectancy, 0.567, than health expenditure as a percent of GDP does, indicating overall economic success improves longevity more than healthcare spending as a percent of GDP.
+
+
+### Research Question \#3: Health Expenditure Among Lower-Income Countries
+In countries below the median GDP per capita, those that spend above 5% on health only have a life expectancy advantage of 1.1 years (67.98 versus 66.9 years). The scatter plot shows most lower-income countries clustering between 60-75 years regardless of spending level, with no clear separation at thresholds around 5%. This minimal difference suggests that other factors beyond health expenditure percentage has a more influential and larger role.
+
+### Story in the Data
+This analysis suggests that higher health spending is associated with better outcomes, but the relationships are surprisingly weak. Spending more on health generally helps but is no guarantee of better results-many countries achieve strong health outcomes at modest spending levels while others spend heavily with disappointing returns. Economic development would appear more influential than health expenditure percentage, with stronger associations of GDP per capita with both infant mortality and life expectancy. The very strong link between infant mortality and life expectancy suggests that systems effective at keeping children alive also support health throughout life. The critical insight is that how money is spent-through efficient systems, equitable distribution, and strategic allocation-matters more than how much is spent. For policymakers, adequate funding is a necessary but not sufficient condition; countries must also focus their attention on healthcare system efficiency, primary care, preventive services, and broader social determinants of health.
+
+\newpage
+## Data Appendix
+```{r}
+head(data, 15)
+```
 
 \newpage
 ## References
