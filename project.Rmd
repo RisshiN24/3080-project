@@ -228,6 +228,7 @@ bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expec
 sp3 + bp3
 ```
 
+\newpage
 ## Conclusions
 ### Research Question \#1: Health Expenditure and Infant Mortality
 Countries that spend more than the median on health (6.43% of GDP) have relatively lower infant mortality rates-15.48 deaths per 1,000 births versus 24.54 for below-median spenders. This 37% difference suggests that higher health spending indeed buys better child survival. However, the correlation is weak at -0.162, and the scatterplot shows a great deal of variation around the trend, including several low-spending countries with good outcomes and some high-spending countries with poor results. This indicates that it is not the level of spending that determines infant mortality but rather how the resources are used.
