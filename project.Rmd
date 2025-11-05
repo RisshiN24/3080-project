@@ -33,8 +33,8 @@ data$GDP_Group <- ifelse(data$GDP_per_Capita_2022 > median_gdp_per_capita,
 
 ## Introduction 
 Often times quality of life is measured by Real GDP per Capita, the higher this is for a country, the higher perceived quality of life its citizens have. However, we believe it is important to look at health outcomes, specifically life expectancy and infant mortality, to measure quality of life. We will be looking at the relationship between health expenditure as a % of GDP and infant mortality and life expectancy at birth to see if additional spending is strongly correlated with better health outcomes. \newline
--We will specifically be researching if countries with health expenditure above the median have lower infant mortality rates than countries that spend below the median. \newline
--We will also look to see if countries with health expenditure above the median have higher life expectancy than those that spend below the median. 
+-Do countries with health expenditure above the median have lower infant mortality rates than countries that spend below the median. \newline
+-Do countries with health expenditure above the median have higher life expectancy than those that spend below the median. 
 \newline
 - Lastly, we will observe countries that have a below median GDP per capita and determine whether from that set of countries, if countries that spend more than 5% on health expenditure have a greater life expectancy than countries that spend less than 5% on health expenditure.
 
@@ -45,7 +45,40 @@ We removed regional groupings to ensure there was no double counting of data, an
 
 The data comes from a population, but because we were missing some data for 8 countries, it is not a full population. There could be some missing data bias as the countries that are missing data are similar in that they have political instability(ie. Ukraine and North Korea). This means our data does not fully represent unstable countries. We chose the year 2022, and the data may refelct changes due to the Covid-19 Pandemic, so some of the data like health expenditure as a % of GDP may be inflated.
 
-The data is perfect for our research purposes as we have standard units to measure across all coutnries, and official published data is available. We have a very large dataset with 188 observations to reduce variability.
+The data is perfect for our research purposes as we have standard units to measure across all coutnries, and official published data is available. We have a large dataset with 188 observations to reduce variability. Below is a data dictionary for clear understanding of the variables and units. 
+
+``` {r, echo=FALSE}
+library(knitr)
+
+# Simplified data dictionary
+data_dictionary <- data.frame(
+  Variable = c("Country Name", 
+               "Country Code", 
+               "Health Expenditure", 
+               "Infant Mortality Rate", 
+               "GDP per Capita", 
+               "Life Expectancy"),
+  
+  Description = c("Official name of the sovereign country",
+                  "Three-letter country code assigned to countries (e.g., USA for United States, FRA for France)",
+                  "Total spending on health care as a percentage of gross domestic product.",
+                  "The number of infant deaths (children under one year old) per 1,000 live births in 2022. Lower values indicate better child survival rates.",
+                  "The total economic output of a country divided by its population, expressed in current U.S. dollars. Represents the average income per person.",
+                  "The average number of years a newborn is expected to live at birth, measured in years."),
+  
+  Unit_of_Measurement = c("—",
+                         "3-letter code",
+                         "Percentage of GDP",
+                         "Deaths per 1,000 births",
+                         "U.S. dollars",
+                         "Years")
+)
+
+kable(data_dictionary,
+      caption = "Data Dictionary",
+      col.names = c("Variable Name", "Description", "Unit of Measurement"),
+      align = c('l', 'l', 'c'))
+```
 
 ```{r, echo=FALSE}
 summary_data <- data %>%
@@ -186,9 +219,10 @@ bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expec
     theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10))
 bp3
 ```
-## Exploratory Data Analysis
 
 ## Conclusions
+
+
 \newpage
 ## References
 -Anthropic. (2024). Claude (Version 3.5 and Sonnet 4.5) [Large language model]. https://www.anthropic.com/claude\newline
