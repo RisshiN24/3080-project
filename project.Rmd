@@ -198,26 +198,34 @@ q3_summary <- q3data %>%
 sp3 <- ggplot(q3data, aes(x=Health_Expenditure_2022, y=Life_Expectancy_2022)) +
   geom_point(color = "steelblue", size = 3, alpha = 0.6) +
   geom_vline(xintercept = 5, linetype = "dashed", color = "red", linewidth = 1) +
-  labs(title = "Life Expectancy vs Health Expenditure (2022)",
-        subtitle="Countries with Below Median GDP per Capita",
+  labs(title = "Life Expectancy vs Health Expenditure",
+       subtitle = "Countries with Below Median GDP per Capita",
        x = "Health Expenditure (% of GDP)",
        y = "Life Expectancy (years)") +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 8))
-sp3
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 9),
+        plot.subtitle = element_text(hjust = 0.5, size = 8),
+        axis.title = element_text(size = 8),
+        axis.text = element_text(size = 7))
 
-bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expectancy, fill =
-  health_exp_greater_than_5)) +
-    geom_bar(stat = "identity", alpha = 0.8, width = 0.5) +
-    geom_text(aes(label = round(Mean_Life_Expectancy, 2)), vjust = -0.5, size = 3.5) +
-    labs(title = "Mean Life Expectancy by Health Expenditure Level",
-         subtitle = "Countries with Below Median GDP per Capita",
-         x = NULL,
-         y = "Life Expectancy (years)") +
-    scale_fill_manual(values = c("Above 5%" = "steelblue", "Below 5%" = "coral")) +
-    theme_minimal() +
-    theme(legend.position = "none", plot.title = element_text(hjust = 0.5, size = 10,))
-bp3
+# Second plot - bar chart (smaller fonts)
+bp3 <- ggplot(q3_summary, aes(x = health_exp_greater_than_5, y = Mean_Life_Expectancy, fill = health_exp_greater_than_5)) +
+  geom_bar(stat = "identity", alpha = 0.8, width = 0.5) +
+  geom_text(aes(label = round(Mean_Life_Expectancy, 2)), vjust = -0.5, size = 3.5) +
+  labs(title = "Mean Life Expectancy by Health Expenditure",
+       subtitle = "Countries with Below Median GDP per Capita",
+       x = NULL,
+       y = "Life Expectancy (years)") +
+  scale_fill_manual(values = c("Above 5%" = "steelblue", "Below 5%" = "coral")) +
+  theme_minimal() +
+  theme(legend.position = "none", 
+        plot.title = element_text(hjust = 0.5, face = "bold", size = 9),
+        plot.subtitle = element_text(hjust = 0.5, size = 8),
+        axis.title = element_text(size = 8),
+        axis.text = element_text(size = 7))
+
+# Combine side by side
+sp3 + bp3
 ```
 
 ## Conclusions
