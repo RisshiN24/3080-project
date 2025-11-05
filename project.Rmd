@@ -1,6 +1,6 @@
 ---
 title: "Project Part 1"
-author: "Risshi Naaavaal, Caleb Adhikari, and Jonas Lee"
+author: "Risshi Naavaal, Caleb Adhikari, and Jonas Lee"
 fontsize: 12pt
 geometry: margin=1in
 urlcolor: black
