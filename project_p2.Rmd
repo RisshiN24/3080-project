@@ -10,13 +10,15 @@ header-includes:
 - \onehalfspacing
 ---
 
-## Introduction 
+## Introduction and Brief Data Description
 
 In part 1, we considered three questions about how GDP per capita and health expenditure relate to national health outcomes. They are as follows:
 
 1. Do countries with health expenditure above the median have lower infant mortality rates than those below the median? \newline
 2. Do countries with health expenditure above the median have higher life expectancy than those below the median? \newline
 3. Among countries with below-median GDP per capita, do those spending more than 5% on health expenditure have higher life expectancy than those spending less than 5%? \newline
+
+In order to investigate the answers to these questions, we used World Bank data to build a custom 2022 dataset with GDP per capita, health expenditure, infant mortality rate, and life expectancy for each country. Health expenditure is the share of GDP spent on healthcare (public and private combined).
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, highlight=FALSE)
