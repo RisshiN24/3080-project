@@ -52,7 +52,7 @@ data <- data %>%
 ## Exploring Question 2: Life Expectancy vs Health Expenditure Level
 We test whether mean life expectancy is higher for countries above the median health expenditure (% of GDP) compared with those below.
 
-*Note*: After looking at the data, we noticed an odd reported life expectancy for the Central African Republic of 18.82, which appears to be a misreported statistic. For that reason, we are going to avoid including the CAR in our analysis of this question.
+*Note*: After looking at the data, we noticed an oddly low reported life expectancy for the Central African Republic of 18.82, which appears to be a misreported statistic. For that reason, we are going to avoid including the CAR in our analysis of this question.
 
 ```{r, echo=FALSE}
 lifeexp_summary <- data %>%
@@ -93,26 +93,36 @@ qq <- ggplot(data, aes(sample = Life_Expectancy_2022)) +
 
 ## Analysis of the table, histograms, and QQ plots
 
-1. Looking at this table, we see that the size of each of the two groups is nearly identical, which is reasonable since we split the countries by comparing their health expenditure to the *median* health expenditure. We also see that the means have noticeable differences in value, with the group below the median having a life expectancy over 3 years lower.
-2. We see that the variance of each group is relatively the same (44.19 vs 46.37). This means that we can assume homogeneity of variance, a critical assumption for the two-sample Student's t-test (pooled variance).
-3. Looking at the histograms and QQ-plots, there seem to be questions regarding normality. However, we will move forward with caution since each group has n > 30.
-4. For our t-test, we are assuming independence between groups and within groups.
-5. Furthermore, we are going to run a one-tailed test here because through our background and common knowledge of the subject, we had justification before looking at the data to posit an alternate hypothesis that the mean life expectancy is greater for the above median countries than it is for the below median countries.
+1. Looking at this table, we see that the size of each of the two groups is nearly identical, which is reasonable since we split the countries by comparing their health expenditure to the *median* health expenditure. We also see that the means differ noticeably; the group below the median has a life expectancy over 3 years lower.
+2. We see that the variance of each group is relatively the same (44.19 vs 46.37). However, we cannot claim that the population variances are the same with strong evidence, so we cannot truly state homogeneity of variance here.
+3. Looking at the histograms and QQ-plots, there seem to be questions regarding normality. However, each group has n > 30.
+
+## Test to Conduct 
+
+We are conducting a one-tailed two-sample t-test to determine if the mean life expectancy for the above median group is greater than that for the below median group. 
+
+**ASSUMPTIONS**: 
+
+1. Independence: Assuming independence between groups and within groups. However, there could be some spatial dependence that we will set aside for now.
+2. Normality: Each group has n > 30, so even though the EDA highlighted concerns regarding normality, we will proceed.
+3. Homogeneity of Variance: We showed through our EDA that there is not necessarily homogeneity of variance, and so as a result, we will default to Welch's t-test, which does not require this assumption (unlike the Student's/pooled t-test).
+4. Continuous Outcome Variable: Life expectancy is a continuous numerical variable. 
+5. Single tail is justified: Through our background and common knowledge of the subject, we had justification before looking at the data to posit an alternative hypothesis that the mean life expectancy is greater for the above median countries than it is for the below median countries.
 
 ## Conducting the One-Tailed Two-Sample T-test
 
-For this t-test, our null hypothesis is that the means are the same (i.e., there is no statistically significant difference between the two means). Our alternate hypothesis that we are testing is that the above median group has a greater mean life expectancy than the below median group. We are testing at an alpha (significance level) = 0.05.
+For this Welch's t-test, our null hypothesis is that the means are the same (i.e., there is no statistically significant difference between the two means). To reiterate, our alternative hypothesis is that the above median group has a greater mean life expectancy than the below median group. We are testing at an alpha (significance level) = 0.05.
 
 ```{r, echo=FALSE}
+# Default t-test in R is Welch's t-test
 t.test(
   Life_Expectancy_2022 ~ Health_Exp_Group,
   data = data,
-  alternative = "less", # tests Below Median (Group 1) < Above Median (Group 2)
-  var.equal = TRUE
+  alternative = "less" # tests Below Median (Group 1) < Above Median (Group 2)
 ) 
 ```
 
-From the results of the t-test, we see that the t-statistic came out to -3.9239. With a df = 186, the p-value is calculated to be 6.127e-05 < 0.05. As a result, at alpha = 0.05, we can state the that difference in means is statistically significant and that the mean life expectancy for above median countries is greater compared to below median countries. 
+From the results of the t-test, we see that the t-statistic came out to -3.9239. With a df = 185.89, the p-value is calculated to be 6.128e-05 < 0.05. As a result, at alpha = 0.05, we can state that the difference in means is statistically significant and that the mean life expectancy for above median countries is greater compared to below median countries. 
 
 ## References
 ChatGPT (through Cursor and directly through OpenAI) was used for drafting portions of the R code, debugging assistance, cleaning up some of the wording, and answering Statistics-related questions.
