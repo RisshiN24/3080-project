@@ -115,5 +115,5 @@ t.test(
 From the results of the t-test, we see that the t-statistic came out to -3.9239. With a df = 186, the p-value is calculated to be 6.127e-05 < 0.05. As a result, at alpha = 0.05, we can state the that difference in means is statistically significant and that the mean life expectancy for above median countries is greater compared to below median countries. 
 
 ## References
-ChatGPT (OpenAI) was used for drafting portions of the R code, debugging assistance, cleaning up some of the wording, and answering Statistics-related questions.
+ChatGPT (through Cursor and directly through OpenAI) was used for drafting portions of the R code, debugging assistance, cleaning up some of the wording, and answering Statistics-related questions.
 
