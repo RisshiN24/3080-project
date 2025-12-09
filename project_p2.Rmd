@@ -125,6 +125,25 @@ t.test(
 From the results of the t-test, we see that the t-statistic came out to -3.9239. With a df = 185.89, the p-value is calculated to be 6.128e-05 < 0.05. As a result, at alpha = 0.05, we can state that the difference in means is statistically significant and that the mean life expectancy for above median countries is greater compared to below median countries. 
 
 ## Conclusions and Limitations
+Our analysis provided statistically strong evidence that countries that spend above the median percentage of GDP on healthcare have a significantly higher life expectancy. Practically, this suggests that focusing more national resources on healthcare is associated with a longer life expectancy. A possible limitation is that is merely an observational analysis, meaning that we cannot say that more spending causes longer lives. There may be many other confounding variables. Wealthier countries that spend more on healthcare could have better infrastructure, nutrition, education, etc., which could also improve life expectancy. Moreover, there could be issues with complete independence as neighboring countries share similar policies and conditions. Additionally, although our histograms and QQ-plots showed some deviations from normality, each group has over 30 counts, helping the normality. In order to improve in the future, we could control for GDP per capita and development level. We could also explore with multiple years, preferably more recent to improve our accuracy.
+
+```{r}
+library(pwr)
+
+# Calculate effect size
+pooled_sd <- sqrt((44.19 + 46.37) / 2)
+effect_size <- (74.61 - 70.76) / pooled_sd
+
+# Calculate power
+pwr.t.test(n = 94, 
+           d = effect_size, 
+           sig.level = 0.05, 
+           type = "two.sample", 
+           alternative = "greater")
+```
+
+For this statistical power test, the calculated power was at 0.988, meaning that our sample size of 94 countries per group gave us a 98.8% chance of detecting a real difference if one existed. The high power improves our confidence that our significant result shows a real pattern, rather than chance.
+
 - discuss implications of findings
 - what limitations existed (see issues in assumptions)
 - run test for statistical power
