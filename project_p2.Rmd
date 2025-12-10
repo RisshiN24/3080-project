@@ -141,6 +141,8 @@ For this statistical power test, the calculated power was 0.988, meaning that ou
 ## Conclusions and Limitations
 Our analysis provided statistically strong evidence that countries that spend above the median percentage of GDP on healthcare have a significantly higher life expectancy. Practically, this suggests that focusing more national resources on healthcare is associated with a longer life expectancy. A possible limitation is that this is merely an observational analysis, meaning that we cannot say that more spending causes longer lives. There may be many other confounding variables. Wealthier countries that spend more on healthcare could have better infrastructure, nutrition, education, etc., which could also improve life expectancy. Moreover, there could be issues with complete independence as neighboring countries share similar policies and conditions. Additionally, although our histograms and QQ-plots showed some deviations from normality, each group has over 30 counts, allowing us to meet the normality assumption and proceed with caution. In order to improve in the future, we could control for GDP per capita and development level. We could also explore data from different years, preferably more recent data.
 
+## GitHub Repository
+Link: https://github.com/RisshiN24/3080-project
 
 ## References
 ChatGPT (through Cursor and directly through OpenAI)
