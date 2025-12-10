@@ -14,9 +14,9 @@ header-includes:
 
 In part 1, we considered three questions about how GDP per capita and health expenditure relate to national health outcomes. They are as follows:
 
-1. Do countries with health expenditure above the median have lower infant mortality rates than those below the median? \newline
-2. Do countries with health expenditure above the median have higher life expectancy than those below the median? \newline
-3. Among countries with below-median GDP per capita, do those spending more than 5% on health expenditure have higher life expectancy than those spending less than 5%? \newline
+1. Do countries with health expenditure above the median have lower infant mortality rates than those below the median?
+2. Do countries with health expenditure above the median have higher life expectancy than those below the median?
+3. Among countries with below-median GDP per capita, do those spending more than 5% on health expenditure have higher life expectancy than those spending less than 5%?
 
 In order to investigate the answers to these questions, we used World Bank data to build a custom 2022 dataset with GDP per capita, health expenditure, infant mortality rate, and life expectancy for each country. Health expenditure is the share of GDP spent on healthcare (public and private combined).
 
@@ -28,6 +28,7 @@ knitr::opts_chunk$set(echo = TRUE, highlight=FALSE)
 # Load relevant libraries/packages
 library(tidyverse)
 library(knitr)
+library(pwr)
 
 # Load data
 data <- read.csv("merged_data_2022_four_variables.csv") %>%
@@ -126,27 +127,21 @@ From the results of the t-test, we see that the t-statistic came out to -3.9239.
 
 
 ## Statistical Power Test
-```{r}
-library(pwr)
-
+```{r, echo=FALSE}
 # Calculate effect size
 pooled_sd <- sqrt((44.19 + 46.37) / 2)
 effect_size <- (74.61 - 70.76) / pooled_sd
 
 # Calculate power
-pwr.t.test(n = 94, 
-           d = effect_size, 
-           sig.level = 0.05, 
-           type = "two.sample", 
-           alternative = "greater")
+pwr.t.test(n = 94, d = effect_size, sig.level = 0.05, type = "two.sample", alternative = "greater")
 ```
 
-For this statistical power test, the calculated power was at 0.988, meaning that our sample size of 94 countries per group gave us a 98.8% chance of detecting a real difference if one existed. The high power improves our confidence that our significant result shows a real pattern, rather than chance.
+For this statistical power test, the calculated power was 0.988, meaning that our sample size of 94 countries per group gave us a 98.8% chance of detecting a real difference if one existed. The high power improves our confidence that our significant result shows a real pattern, rather than chance.
 
 ## Conclusions and Limitations
-Our analysis provided statistically strong evidence that countries that spend above the median percentage of GDP on healthcare have a significantly higher life expectancy. Practically, this suggests that focusing more national resources on healthcare is associated with a longer life expectancy. A possible limitation is that is merely an observational analysis, meaning that we cannot say that more spending causes longer lives. There may be many other confounding variables. Wealthier countries that spend more on healthcare could have better infrastructure, nutrition, education, etc., which could also improve life expectancy. Moreover, there could be issues with complete independence as neighboring countries share similar policies and conditions. Additionally, although our histograms and QQ-plots showed some deviations from normality, each group has over 30 counts, helping the normality. In order to improve in the future, we could control for GDP per capita and development level. We could also explore with multiple years, preferably more recent to improve our accuracy.
+Our analysis provided statistically strong evidence that countries that spend above the median percentage of GDP on healthcare have a significantly higher life expectancy. Practically, this suggests that focusing more national resources on healthcare is associated with a longer life expectancy. A possible limitation is that this is merely an observational analysis, meaning that we cannot say that more spending causes longer lives. There may be many other confounding variables. Wealthier countries that spend more on healthcare could have better infrastructure, nutrition, education, etc., which could also improve life expectancy. Moreover, there could be issues with complete independence as neighboring countries share similar policies and conditions. Additionally, although our histograms and QQ-plots showed some deviations from normality, each group has over 30 counts, allowing us to meet the normality assumption and proceed with caution. In order to improve in the future, we could control for GDP per capita and development level. We could also explore data from different years, preferably more recent data.
 
 
 ## References
-ChatGPT (through Cursor and directly through OpenAI) was used for drafting portions of the R code, debugging assistance, cleaning up some of the wording, and answering Statistics-related questions.
+ChatGPT (through Cursor and directly through OpenAI)
 
